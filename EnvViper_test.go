@@ -3,6 +3,7 @@ package envviper
 import (
 	"github.com/stretchr/testify/suite"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -43,7 +44,7 @@ func (s *viperTestSuite) SetupSuite() {
 	_ = os.Setenv("VIPER_DB_PGSQL2_URI", DbUriPgsql2)
 }
 
-func (s *viperTestSuite) TestOne() {
+func (s *viperTestSuite) TestUnmarshal() {
 	vp := NewEnvViper()
 	vp.SetConfigType("json")
 	vp.SetConfigFile("config.json")
@@ -70,4 +71,17 @@ func (s *viperTestSuite) TestOne() {
 	s.Equal(DbUriNats, cfg.Db["nats"].Uri)
 	s.Equal(DbUriMongo, cfg.Db["mongo"].Uri)
 	s.Equal("", cfg.Db["mysql"].Uri)
+}
+
+func (s *viperTestSuite) TestPanics() {
+	vp := NewEnvViper()
+	s.Panics(func() {
+		vp.AutomaticEnv()
+	})
+	s.Panics(func() {
+		vp.SetEnvPrefix("viper")
+	})
+	s.Panics(func() {
+		vp.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	})
 }
