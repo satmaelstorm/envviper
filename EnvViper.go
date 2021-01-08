@@ -53,13 +53,13 @@ func (ev *EnvViper) SetEnvParams(prefix string, replacement ...Replacement) {
 	prefix = strings.ToUpper(prefix)
 	var registrationReplacer *strings.Replacer
 	if len(replacement) > 0 {
-		viperReplacerStrings := make([]string, len(replacement) * 2)
-		registrationReplacerStrings := make([]string, len(replacement) * 2)
+		viperReplacerStrings := make([]string, len(replacement)*2)
+		registrationReplacerStrings := make([]string, len(replacement)*2)
 		for i := 0; i < len(replacement); i++ {
-			viperReplacerStrings[2 * i] = replacement[i].InVar
-			viperReplacerStrings[2 * i + 1] = replacement[i].InEnv
-			registrationReplacerStrings[2 * i] = replacement[i].InEnv
-			registrationReplacerStrings[2 * i + 1] = replacement[i].InVar
+			viperReplacerStrings[2*i] = replacement[i].InVar
+			viperReplacerStrings[2*i+1] = replacement[i].InEnv
+			registrationReplacerStrings[2*i] = replacement[i].InEnv
+			registrationReplacerStrings[2*i+1] = replacement[i].InVar
 		}
 		replacer := strings.NewReplacer(viperReplacerStrings...)
 		ev.Viper.SetEnvKeyReplacer(replacer)
@@ -80,4 +80,3 @@ func (ev *EnvViper) SetEnvParams(prefix string, replacement ...Replacement) {
 		}
 	}
 }
-
