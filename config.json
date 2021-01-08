@@ -1,0 +1,21 @@
+{
+  "http": {
+    "port": "8080",
+    "timeout": 30
+  },
+  "db": {
+    "pgsql": {
+      "maxlifetime": 60
+    },
+    "mongo": {
+      "uri": "test",
+      "maxlifetime": 5
+    },
+    "nats": {
+      "maxlifetime": 5
+    },
+    "mysql": {
+      "maxlifetime": 10
+    }
+  }
+}
