@@ -85,3 +85,32 @@ func (s *viperTestSuite) TestPanics() {
 		vp.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	})
 }
+
+func (s *viperTestSuite) TestUnmarshalGlobal() {
+	vp := DefEnvViper()
+	vp.SetConfigType("json")
+	vp.SetConfigFile("config.json")
+	err := vp.ReadInConfig()
+	s.Nil(err)
+	vp.SetEnvParamsSimple("viper")
+	var cfg Configuration
+	err = vp.Unmarshal(&cfg)
+	s.Nil(err)
+	s.Equal("8080", cfg.Http.Port)
+	s.Equal(30, cfg.Http.Timeout)
+	s.Contains(cfg.Db, "pgsql")
+	s.Contains(cfg.Db, "nats")
+	s.Contains(cfg.Db, "mongo")
+	s.Contains(cfg.Db, "pgsql2")
+	s.Contains(cfg.Db, "mysql")
+	s.Equal(60, cfg.Db["pgsql"].Maxlifetime)
+	s.Equal(0, cfg.Db["pgsql2"].Maxlifetime)
+	s.Equal(5, cfg.Db["nats"].Maxlifetime)
+	s.Equal(5, cfg.Db["mongo"].Maxlifetime)
+	s.Equal(10, cfg.Db["mysql"].Maxlifetime)
+	s.Equal(DbUriPgsql, cfg.Db["pgsql"].Uri)
+	s.Equal(DbUriPgsql2, cfg.Db["pgsql2"].Uri)
+	s.Equal(DbUriNats, cfg.Db["nats"].Uri)
+	s.Equal(DbUriMongo, cfg.Db["mongo"].Uri)
+	s.Equal("", cfg.Db["mysql"].Uri)
+}
