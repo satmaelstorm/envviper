@@ -18,6 +18,17 @@ func NewEnvViper() *EnvViper {
 	return ev
 }
 
+//DefEnvViper creates EnvViper instance with global Viper
+// You can use:
+// import "github.com/satmaelstorm/envviper"
+// viper := envviper.DefEnvViper()
+// for fast migrate to EnvViper
+func DefEnvViper() *EnvViper {
+	ev := new(EnvViper)
+	ev.Viper = viper.GetViper()
+	return ev
+}
+
 //SetEnvPrefix - must not be use, panics if called
 func (ev *EnvViper) SetEnvPrefix(prefix string) {
 	panic("use SetEnvParams instead of SetEnvPrefix")
